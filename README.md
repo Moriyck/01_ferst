@@ -1,6 +1,5 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-Мой первый проект на React. Создан с помощью "Димыча" на канале  https://www.youtube.com/channel/UCTW0FUhT0m-Bqg2trTbSs0g
 ## Available Scripts
 
 In the project directory, you can run:
