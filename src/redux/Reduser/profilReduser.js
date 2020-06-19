@@ -1,8 +1,10 @@
 const ADD_POST = 'ADD_POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
+const SET_PROFIL = 'SET_PROFIL'
+const TOGAL_IS_FECHING = 'TOGAL_IS_FECHING'
 
 let initialState = {
-
+    profil: [],
     posts: [
         { id: 1, avatar: 'https://yt3.ggpht.com/a/AGF-l7_CxhgKe6ZNB7syEdldsBeNPZYgvJLK2f_N=s900-c-k-c0xffffffff-no-rj-mo', message: 'Hi, this is a dialog number one', likesCount: 112 },
         { id: 2, avatar: 'https://yt3.ggpht.com/a/AGF-l7_CxhgKe6ZNB7syEdldsBeNPZYgvJLK2f_N=s900-c-k-c0xffffffff-no-rj-mo', message: 'Hi, this is a dialog number two', likesCount: 25 },
@@ -16,7 +18,7 @@ let initialState = {
 
 
 const profilReduser = (state = initialState, action) => {
-
+    //debugger
     switch (action.type) {
         case ADD_POST:
             let text = state.newPostText
@@ -39,12 +41,30 @@ const profilReduser = (state = initialState, action) => {
 
             }
 
+        case SET_PROFIL:
+            {
+                return {
+                    ...state,
+                    profil: action.profil
+                }
+            }
+
+        case TOGAL_IS_FECHING:
+            {
+                return {
+                    ...state,
+                    isFetching: action.isFetching
+                }
+            }
+
         default:
             return state
     }
 }
 
-export const addPostActionCreator = () => ({ type: ADD_POST })
-export const updateNewPostTextActionCreator = (text) => ({ type: UPDATE_NEW_POST_TEXT, text: text })
+export const setProfil = (profil) => ({ type: SET_PROFIL, profil })
+export const addPost = () => ({ type: ADD_POST })
+export const updateNewPostText = (text) => ({ type: UPDATE_NEW_POST_TEXT, text: text })
+export const totalIsFetchin = (isFetching) => ({ type: TOGAL_IS_FECHING, isFetching })
 
 export default profilReduser

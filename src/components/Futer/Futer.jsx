@@ -1,12 +1,13 @@
 import React from 'react';
 import classes from './Futer.module.css';
 const Futer = () => {
-    return (
-      <div className = {classes.futer}>
-      <p className ={classes.footerauthor}>pbc31 web 333</p>
+  return (
+    <div className={classes.futer}>
+      <div className={classes.footerauthor}>it development</div>
+      
     </div>
-    )
+  )
 
-  }
-  
-  export default  Futer;
+}
+
+export default Futer;

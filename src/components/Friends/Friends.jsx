@@ -11,17 +11,15 @@ const Friends = (props) => {
   }
 
   let friendsElements = props.users.map(f => <FriendsItem
-    key={f.id}
     status={f.doc.status}
     follow={f.doc.follow}
     avatar={f.doc.avatar}
     name={f.doc.name}
-    id={f.doc.id}
+    id={f.id}
     country={f.doc.country}
     city={f.doc.city}
     changeToFollow={props.changeToFollow}
     changeToUnFollow={props.changeToUnFollow}
-    setUsers={props.setUsers}
   />)
 
   return (

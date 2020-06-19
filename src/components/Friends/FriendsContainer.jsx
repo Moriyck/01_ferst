@@ -1,13 +1,12 @@
 import React from 'react'
-import { connect } from "react-redux"
-import { followAC, unFollowAC, setUsersAC, setCurrontPageAC, setTotalRowsAC, totalIsFetchingAC } from "../../redux/Reduser/friendsReduser"
-import Friends from "./Friends"
+import { changeToFollow, changeToUnFollow, setUsers, setCurrontPage, setTotalRows, totalIsFetchin } from "../../redux/Reduser/friendsReduser"
+import Friends from './Friends'
 import *as axios from 'axios'
-import preloader from './../assets/img/91.gif'
 import Preloader from '../../comon/preloader/preloader'
+import { connect } from 'react-redux'
 
 class FriendsContainer extends React.Component {
-  
+
   componentDidMount() {
     this.props.totalIsFetchin(true)
     let skipSaze = (this.props.pageSaze * this.props.currontPage) - this.props.pageSaze
@@ -43,6 +42,8 @@ class FriendsContainer extends React.Component {
           totalPageCount={this.props.totalPageCount}
           pageSaze={this.props.pageSaze}
           currontPage={this.props.currontPage}
+          changeToFollow={this.props.changeToFollow}
+          changeToUnFollow={this.props.changeToUnFollow}
         />
       </div>
     )
@@ -61,40 +62,4 @@ let mapStateToProps = (state) => {
   }
 }
 
-let mapDisprtchToProps = (dispatch) => {
-  return {
-
-    changeToFollow: (userId) => {
-      let action = followAC(userId)
-      dispatch(action)
-    },
-
-    changeToUnFollow: (userId) => {
-      let action = unFollowAC(userId)
-      dispatch(action)
-    },
-
-    setUsers: (users) => {
-      let action = setUsersAC(users)
-      dispatch(action)
-    },
-
-    setCurrontPage: (pageNumber) => {
-      let action = setCurrontPageAC(pageNumber)
-      dispatch(action)
-    },
-
-    setTotalRows: (totalRows) => {
-      let action = setTotalRowsAC(totalRows)
-      dispatch(action)
-    },
-
-    totalIsFetchin: (isFetching) => {
-      let action = totalIsFetchingAC(isFetching)
-      dispatch(action)
-    }
-
-  }
-}
-
-export default connect(mapStateToProps, mapDisprtchToProps)(FriendsContainer)
+export default connect(mapStateToProps, { changeToFollow, changeToUnFollow, setUsers, setCurrontPage, setTotalRows, totalIsFetchin })(FriendsContainer)

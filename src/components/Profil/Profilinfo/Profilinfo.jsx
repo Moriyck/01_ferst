@@ -1,21 +1,26 @@
 import React from 'react'
 import classes from './Profilinfo.module.css'
+import Preloader from '../../../comon/preloader/preloader'
 
 const Profilinfo = (props) => {
+  if (!props.profil) {
+    return <Preloader />
+  }
+  //debugger
   return (
     <div className={classes.profilinfo}>
       <div >
         <img src='https://avatars.mds.yandex.net/get-pdb/216365/95f3b47e-11c4-4e31-a28f-9e2d67412b1b/s1200'></img>
       </div>
       <div className={classes.avatar}>
+        <h3>
+          Name: {props.profil.name}
+        </h3>
         <div>
-          Avatar
+          <img src={props.profil.avatar}></img>
         </div>
         <div>
-          <img src='https://yt3.ggpht.com/a/AGF-l7_CxhgKe6ZNB7syEdldsBeNPZYgvJLK2f_N=s900-c-k-c0xffffffff-no-rj-mo'></img>
-        </div>
-        <div>
-          discripchon
+          {props.profil.description}
         </div>
       </div>
     </div>

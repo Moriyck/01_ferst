@@ -10,7 +10,7 @@ const Newpost = (props) => {
 
   let onPostCnage = () => {
     let text = newPostElement.current.value
-    props.onPostCnage(text)
+    props.updateNewPostText(text)
   }
 
   return (

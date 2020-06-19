@@ -1,5 +1,6 @@
 import React from 'react'
 import classes from './Friends.module.css'
+import { NavLink } from 'react-router-dom'
 
 const FriendsItem = (props) => {
 
@@ -13,12 +14,13 @@ const FriendsItem = (props) => {
     wordfollow = 'Unfollow'
   }
 
-  let changeToFolloww = () => {
+  let changeFolloww = () => {
+    //debugger
     if (props.follow === true) {
-      props.changeToUnFollow(userId)
+      props.changeToFollow(userId)
     }
     else {
-      props.changeToFollow(userId)
+      props.changeToUnFollow(userId)
     }
   }
 
@@ -27,21 +29,26 @@ const FriendsItem = (props) => {
 
       <div>
         <div>
+          <NavLink to={'/Profil/' + userId}>
           <img className={classes.avatar} src={props.avatar} />
+          </NavLink>
         </div>
         <div>
-          <button onClick={changeToFolloww}>{wordfollow}</button>
+          <button onClick={changeFolloww}>{wordfollow}</button>
         </div>
       </div>
-      <div >
-        
-      </div>
+
       <div className={classes.message}>
 
         <div>
           <div>
-            Nicname: {props.name}{props.id}
+            Nicname: {props.name}
           </div>
+
+          <div>
+            id: {props.id}
+          </div>
+
           <div>
             Status: {props.status}
           </div>

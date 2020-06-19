@@ -1,6 +1,6 @@
 .friendsItem {
     display: grid;
-    grid-template-columns: 0.15fr 0.15fr 0.5fr;
+    grid-template-columns: 0.15fr 1fr;
     padding: 5px;
 }
 
@@ -21,7 +21,6 @@
 .hvost {
     height: 100px;
     width: 100px;
-    background-image: url(./img/message.png) repeat-y;
 }
 
 .selectedPage {

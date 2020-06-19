@@ -1,5 +1,5 @@
-const FOLLOW = 'FOLLOW'
-const UNFOLLOW = 'UNFOLLOW'
+const TO_FOLLOW = 'TO_FOLLOW'
+const UN_FOLLOW = 'UN_FOLLOW'
 const SET_USERS = 'SET_USERS'
 const SETCURRONTPAGE = 'SETCURRONTPAGE'
 const SETTOTALROWS = 'SETTOTALROWS'
@@ -17,23 +17,29 @@ let initialState = {
 const friendsReduser = (state = initialState, action) => {
     //debugger
     switch (action.type) {
-        case FOLLOW:
+        case TO_FOLLOW:
             return {
                 ...state,
                 users: state.users.map(u => {
                     if (u.id === action.userId) {
-                        return {...u, follow: true }
+                        return {
+                            ...u,
+                            doc: {...u.doc, follow: false }
+                        }
                     }
                     return u
                 })
             }
 
-        case UNFOLLOW:
+        case UN_FOLLOW:
             return {
                 ...state,
                 users: state.users.map(u => {
                     if (u.id === action.userId) {
-                        return {...u, follow: false }
+                        return {
+                            ...u,
+                            doc: {...u.doc, follow: true }
+                        }
                     }
                     return u
                 })
@@ -76,11 +82,11 @@ const friendsReduser = (state = initialState, action) => {
     }
 
 }
-export const followAC = (userId) => ({ type: FOLLOW, userId })
-export const unFollowAC = (userId) => ({ type: UNFOLLOW, userId })
-export const setUsersAC = (users) => ({ type: SET_USERS, users })
-export const setCurrontPageAC = (currontPage) => ({ type: SETCURRONTPAGE, currontPage })
-export const setTotalRowsAC = (totalRows) => ({ type: SETTOTALROWS, totalRows })
-export const totalIsFetchingAC = (isFetching) => ({ type: TOGAL_IS_FECHING, isFetching })
+export const changeToFollow = (userId) => ({ type: TO_FOLLOW, userId })
+export const changeToUnFollow = (userId) => ({ type: UN_FOLLOW, userId })
+export const setUsers = (users) => ({ type: SET_USERS, users })
+export const setCurrontPage = (currontPage) => ({ type: SETCURRONTPAGE, currontPage })
+export const setTotalRows = (totalRows) => ({ type: SETTOTALROWS, totalRows })
+export const totalIsFetchin = (isFetching) => ({ type: TOGAL_IS_FECHING, isFetching })
 
 export default friendsReduser

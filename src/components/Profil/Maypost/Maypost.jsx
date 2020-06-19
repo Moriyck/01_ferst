@@ -12,7 +12,7 @@ const Maypost = (props) => {
         <Newpost
           newPostText={props.profilePage.newPostText}
           addPost={props.addPost}
-          onPostCnage={props.onPostCnage}
+          updateNewPostText={props.updateNewPostText}
         />
       </div>
       <div className={classes.item}>
