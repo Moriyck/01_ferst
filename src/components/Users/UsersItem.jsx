@@ -1,49 +1,46 @@
 import React from 'react'
-import classes from './Friends.module.css'
+import classes from './Users.module.css'
 import { NavLink } from 'react-router-dom'
-import { usersAPI } from '../../api/api'
 
-const FriendsItem = (props) => {
+const usersItem = (props) => {
+
+  let doc = props.doc
   let userId = props.id
   let wordfollow = props.follow
   let rev = props.rev
-  let revFollow = props.revFollow
   let nameMy = props.nameMy
-  let doc = props.doc
-  
-  if (wordfollow === true) {
+
+  let revFollow = props.revFollow
+  let nameMyFollow = props.nameMyFollow
+
+  if (props.follow === true) {
     wordfollow = 'Unfollow'
   }
   else {
-    wordfollow = 'Follow '+revFollow
+    wordfollow = 'To follow'
   }
 
   let changeFolloww = () => {
-    if (props.follow === nameMy) {
-      usersAPI.deleteFollow(userId, rev).then(data => {
-        if (data.ok === true)
-          props.changeToUnFollow(userId)
-      })
+
+    if (props.follow === true) {
+      props.followThunk(userId, revFollow)
     }
     else {
-      usersAPI.putFollow(userId, nameMy).then(data => {
-        if (data.ok === true)
-          props.changeToFollow(userId)
-      })
+      props.followUnThunk(userId, nameMy)
     }
   }
- 
+
   return (
-    <div className={classes.friendsItem}>
+    <div className={classes.usersItem}>
 
       <div>
         <div>
-          <NavLink to={'/Profil/' + userId}>
+          <NavLink to={'/Profile/' + userId}>
             <img className={classes.avatar} src={props.avatar} />
           </NavLink>
         </div>
         <div>
-          <button onClick={changeFolloww}>{wordfollow}</button>
+          <button disabled={props.followingInProgress.some(id => id === userId)} onClick={changeFolloww}>{wordfollow}</button>
         </div>
       </div>
 
@@ -78,4 +75,4 @@ const FriendsItem = (props) => {
     </div>
   )
 }
-export default FriendsItem
+export default usersItem

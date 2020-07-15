@@ -11,11 +11,12 @@ let initialState = {
     pageSaze: 3,
     totalPageCount: 0,
     currontPage: 1,
-    isFetching: false
+    isFetching: false,
+
 }
 
 const friendsReduser = (state = initialState, action) => {
-    //debugger
+
     switch (action.type) {
         case TO_FOLLOW:
             return {
@@ -24,7 +25,7 @@ const friendsReduser = (state = initialState, action) => {
                     if (u.id === action.userId) {
                         return {
                             ...u,
-                            doc: {...u.doc, follow: false }
+                            value: { ...u.value, follow: true }
                         }
                     }
                     return u
@@ -38,7 +39,7 @@ const friendsReduser = (state = initialState, action) => {
                     if (u.id === action.userId) {
                         return {
                             ...u,
-                            doc: {...u.doc, follow: true }
+                            value: { ...u.value, follow: false }
                         }
                     }
                     return u

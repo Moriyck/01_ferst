@@ -25,7 +25,7 @@ let initialState = {
         { id: 4, idDialogs: 2, message: 'Hi, this is a dialog number 4' },
         { id: 5, idDialogs: 1, message: 'Hi, this is a dialog number 5' },
     ],
-    newMessageBody: 'vnbv vbnvnbv nvbnvbnv'
+    newMessageBody: ''
 
 }
 

@@ -4,9 +4,10 @@ import './App.css'
 import Header from './components/Header/Header'
 import Futer from './components/Futer/Futer'
 import DialogsContainer from './components/Dialogs/DialogsContainer'
-import FriendsContainer from './components/Friends/FriendsContainer'
+import UsersContainer from './components/Users/UsersContainer'
 import NavbarContainer from './components/Navbar/NavbarConainer'
 import ProfilContainer from './components/Profil/ProfilContainer'
+import AuthContainer from './components/Authentication/AuthContainer'
 
 const App = () => {
 
@@ -15,13 +16,13 @@ const App = () => {
             <Header />
             <NavbarContainer />
             <div className='app-wrapper-content' >
-                <Route path='/profil' render={() => < ProfilContainer />} />
+                <Route path='' render={() => < AuthContainer />} />
+                <Route path='/profile/:userId?' render={() => < ProfilContainer />} />
                 <Route path='/dialogs' render={() => < DialogsContainer />} />
-                <Route path='/Friends' render={() => < FriendsContainer />} />
+                <Route path='/Users' render={() => < UsersContainer />} />
             </div>
             <Futer />
         </div>
-
     )
 }
-export default App;
+export default App

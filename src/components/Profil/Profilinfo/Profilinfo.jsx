@@ -1,12 +1,8 @@
 import React from 'react'
 import classes from './Profilinfo.module.css'
-import Preloader from '../../../comon/preloader/preloader'
 
 const Profilinfo = (props) => {
-  if (!props.profil) {
-    return <Preloader />
-  }
-  //debugger
+  
   return (
     <div className={classes.profilinfo}>
       <div >

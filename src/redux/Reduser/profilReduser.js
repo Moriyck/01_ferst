@@ -13,12 +13,12 @@ let initialState = {
         { id: 5, avatar: 'https://yt3.ggpht.com/a/AGF-l7_CxhgKe6ZNB7syEdldsBeNPZYgvJLK2f_N=s900-c-k-c0xffffffff-no-rj-mo', message: 'Hi, this is a dialog number 5', likesCount: 52 }
     ],
 
-    newPostText: 'Vasiy123411'
+    newPostText: ''
 }
 
 
 const profilReduser = (state = initialState, action) => {
-    //debugger
+    
     switch (action.type) {
         case ADD_POST:
             let text = state.newPostText

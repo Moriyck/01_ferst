@@ -1,33 +1,36 @@
 import React from 'react'
 import { changeToFollow, changeToUnFollow, setUsers, setCurrontPage, setTotalRows, totalIsFetchin } from "../../redux/Reduser/friendsReduser"
 import Friends from './Friends'
-import *as axios from 'axios'
 import Preloader from '../../comon/preloader/preloader'
 import { connect } from 'react-redux'
+import { usersAPI } from '../../api/api'
+
 
 class FriendsContainer extends React.Component {
 
   componentDidMount() {
     this.props.totalIsFetchin(true)
+
     let skipSaze = (this.props.pageSaze * this.props.currontPage) - this.props.pageSaze
-    axios.get(`http://localhost:5984/myapp/_design/users/_view/users?include_docs=true&limit=${this.props.pageSaze}&skip=${skipSaze}`)
-      .then(response => {
-        //debugger
-        this.props.totalIsFetchin(false)
-        this.props.setUsers(response.data.rows)
-        this.props.setTotalRows(response.data.total_rows)
-      })
+    usersAPI.getUsers(this.props.pageSaze, skipSaze).then(data => {
+      this.props.totalIsFetchin(false)
+      this.props.setUsers(data.rows)
+      this.props.setTotalRows(data.total_rows)
+    })
   }
   onPageChanged = (pageNumber) => {
     this.props.totalIsFetchin(true)
+
     let skipSaze = (this.props.pageSaze * pageNumber) - this.props.pageSaze
     this.props.setCurrontPage(pageNumber)
-    axios.get(`http://localhost:5984/myapp/_design/users/_view/users?include_docs=true&limit=${this.props.pageSaze}&skip=${skipSaze}`)
-      .then(response => {
-        this.props.totalIsFetchin(false)
-        this.props.setUsers(response.data.rows)
-        this.props.setTotalRows(response.data.total_rows)
-      })
+    usersAPI.getUsers(this.props.pageSaze, skipSaze).then(data => {
+      this.props.totalIsFetchin(false)
+      this.props.setUsers(data.rows)
+      this.props.setTotalRows(data.total_rows)
+    })
+    usersAPI.getUsersFollow().then(data => {
+      this.props.setUsersFollow(data.rows)
+    })
   }
   render() {
 
@@ -37,6 +40,7 @@ class FriendsContainer extends React.Component {
           {this.props.isFetching ? <Preloader /> : null}
         </div>
         <Friends
+          {...this.props}
           onPageChanged={this.onPageChanged}
           users={this.props.users}
           totalPageCount={this.props.totalPageCount}

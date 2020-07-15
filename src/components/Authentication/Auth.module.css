@@ -1,0 +1,6 @@
+.authentication {
+    grid-area: c;
+    background-color: #006CA7;
+    color: rgb(248, 247, 247);
+    padding: 1px;
+}

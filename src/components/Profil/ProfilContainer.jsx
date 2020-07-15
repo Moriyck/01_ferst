@@ -1,44 +1,28 @@
 import React from 'react'
 import { setProfil, addPost, updateNewPostText, totalIsFetchin } from "../../redux/Reduser/profilReduser"
 import *as axios from 'axios'
-import Preloader from '../../comon/preloader/preloader'
 import { connect } from 'react-redux'
-import Profil from "./Profil"
-
-
+import Profil from './Profil'
+import { withRouter } from 'react-router-dom'
 
 class ProfilContainer extends React.Component {
 
   componentDidMount() {
-    //debugger
-    //this.props.totalIsFetchin(true)
-    axios.get(`http://localhost:5984/myapp/0617385af2d50279f09dbe3841005dd2`)
+    this.props.totalIsFetchin(true)
+    let userId = this.props.match.params.userId
+    if (!userId) {
+      userId = 'username1'
+    }
+    axios.get('http://localhost:5984/_users/org.couchdb.user%3A' + userId, { withCredentials: true })
       .then(response => {
-        debugger
-        //this.props.totalIsFetchin(false)
         this.props.setProfil(response.data)
-        //this.props.setTotalRows(response.data.total_rows)
       })
   }
-  /* onPageChanged = (pageNumber) => {
-     this.props.totalIsFetchin(true)
-     let skipSaze = (this.props.pageSaze * pageNumber) - this.props.pageSaze
-     this.props.setCurrontPage(pageNumber)
-     axios.get(`http://localhost:5984/myapp/_design/users/_view/users?include_docs=true&limit=${this.props.pageSaze}&skip=${skipSaze}`)
-       .then(response => {
-         this.props.totalIsFetchin(false)
-         this.props.setUsers(response.data.rows)
-         this.props.setTotalRows(response.data.total_rows)
-       })
-   }*/
+
   render() {
-    //debugger
     return (
       <div>
-        <div>
-          {this.props.isFetching ? <Preloader /> : null}
-        </div>
-        <Profil {...this.props} profil= {this.props.profilePage.profil}
+        <Profil {...this.props} profil={this.props.profilePage.profil}
         />
       </div>
     )
@@ -48,8 +32,11 @@ class ProfilContainer extends React.Component {
 let mapStateToProps = (state) => {
   return {
     profilePage: state.profilePage,
-    profil: state.profilePage.profil
+    profil: state.profilePage.profil,
+    isFetching: state.profilePage.isFetching
   }
 }
 
-export default connect(mapStateToProps, { updateNewPostText, addPost, setProfil, totalIsFetchin })(ProfilContainer)
+let WithDataContainerComponent = withRouter(ProfilContainer)
+
+export default connect(mapStateToProps, { setProfil, updateNewPostText, addPost, totalIsFetchin })(WithDataContainerComponent, ProfilContainer)

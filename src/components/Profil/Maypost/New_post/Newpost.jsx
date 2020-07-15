@@ -22,7 +22,7 @@ const Newpost = (props) => {
       </div>
       <div>
         <div>
-          <textarea onChange={onPostCnage} ref={newPostElement} value={props.newPostText} />
+          <textarea onChange={onPostCnage} ref={newPostElement} value={props.newPostText} placeholder="Write a new post"/>
         </div>
         <div>
           <button onClick={addPost}>Add post</button>
