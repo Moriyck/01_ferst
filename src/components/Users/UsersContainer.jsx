@@ -6,6 +6,7 @@ import {
 import Users from './Users'
 import Preloader from '../../comon/preloader/preloader'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 class UsersContainer extends React.Component {
 
@@ -18,7 +19,8 @@ class UsersContainer extends React.Component {
   }
 
   render() {
-
+    if (!this.props.nameMy) { return <Redirect to={'AuthContainer'} />
+  }
     return (
       <div>
         <div>
@@ -56,5 +58,5 @@ let mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   changeToFollow, changeToUnFollow,
-  setUsersFollow, setTotalRows, totalIsFetchinProgress, getUsers, followThunk, followUnThunk
+  setTotalRows, totalIsFetchinProgress, getUsers, followThunk, followUnThunk
 })(UsersContainer)

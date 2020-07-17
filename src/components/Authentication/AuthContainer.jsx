@@ -1,6 +1,5 @@
 import React from 'react'
 import { setAuthUser, totalIsFetchin } from '../../redux/Reduser/authReduser'
-import Preloader from '../../comon/preloader/preloader'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import Authentication from './Authentication'

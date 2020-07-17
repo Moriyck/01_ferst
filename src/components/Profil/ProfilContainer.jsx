@@ -1,6 +1,5 @@
 import React from 'react'
-import { setProfil, addPost, updateNewPostText, totalIsFetchin } from "../../redux/Reduser/profilReduser"
-import *as axios from 'axios'
+import { updateNewPostText, getUsersProfile, getUsersPosts, postUsersPost } from "../../redux/Reduser/profilReduser"
 import { connect } from 'react-redux'
 import Profil from './Profil'
 import { withRouter } from 'react-router-dom'
@@ -8,21 +7,34 @@ import { withRouter } from 'react-router-dom'
 class ProfilContainer extends React.Component {
 
   componentDidMount() {
-    this.props.totalIsFetchin(true)
     let userId = this.props.match.params.userId
     if (!userId) {
-      userId = 'username1'
+      userId = this.props.nameMy
     }
-    axios.get('http://localhost:5984/_users/org.couchdb.user%3A' + userId, { withCredentials: true })
-      .then(response => {
-        this.props.setProfil(response.data)
-      })
+    this.props.getUsersProfile(userId, this.props.nameMy)
+    this.props.getUsersPosts(userId)
   }
+
+  addPost = () => {
+    debugger
+    this.props.postUsersPost(this.props.nameMy, this.props.profilePage.newPostText)
+  }
+  onPostCnage = (ref) => {
+    debugger
+    this.props.updateNewPostText(ref.currentTarget.value)
+  }
+
+
 
   render() {
     return (
       <div>
-        <Profil {...this.props} profil={this.props.profilePage.profil}
+        <Profil {...this.props}
+          nameMy={this.props.nameMy}
+          profil={this.props.profilePage.profil}
+          newPostText={this.props.profilePage.newPostText}
+          addPost={this.addPost}
+          onPostCnage={this.onPostCnage}
         />
       </div>
     )
@@ -33,10 +45,11 @@ let mapStateToProps = (state) => {
   return {
     profilePage: state.profilePage,
     profil: state.profilePage.profil,
-    isFetching: state.profilePage.isFetching
+    isFetching: state.profilePage.isFetching,
+    nameMy: state.authPage.name
   }
 }
 
 let WithDataContainerComponent = withRouter(ProfilContainer)
 
-export default connect(mapStateToProps, { setProfil, updateNewPostText, addPost, totalIsFetchin })(WithDataContainerComponent, ProfilContainer)
+export default connect(mapStateToProps, { updateNewPostText, getUsersProfile, getUsersPosts, postUsersPost })(WithDataContainerComponent, ProfilContainer)

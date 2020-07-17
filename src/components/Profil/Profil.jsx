@@ -4,10 +4,13 @@ import Profilinfo from './Profilinfo/Profilinfo'
 import Maypost from './Maypost/Maypost'
 import Preloader from '../../comon/preloader/preloader'
 import Newpost from './Maypost/New_post/Newpost'
+import { Redirect } from 'react-router-dom'
 
 const Profil = (props) => {
   if (!props.profil) {
     return <Preloader />
+  }
+  if (!props.nameMy) { return <Redirect to={'AuthContainer'} />
   }
   return (
     <div className={classes.profil}>
@@ -17,16 +20,17 @@ const Profil = (props) => {
       </div>
       <div>
         <Maypost
+          profil={props.profil}
           posts={props.profilePage.posts}
-          addPost={props.addPost}
-          updateNewPostText={props.updateNewPostText}
+          
         />
       </div>
       <div className={classes.item}>
         <Newpost
           newPostText={props.profilePage.newPostText}
+          nameMy={props.nameMy}
           addPost={props.addPost}
-          updateNewPostText={props.updateNewPostText}
+          onPostCnage={props.onPostCnage}
         />
       </div>
     </div>

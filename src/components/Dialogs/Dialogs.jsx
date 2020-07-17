@@ -2,6 +2,7 @@ import React from 'react'
 import Message from './Message/Message'
 import DialogItem from './Dialogitem/Dialogitem'
 import classes from './Dialogs.module.css'
+import { Redirect } from 'react-router-dom'
 
 
 const Dialogs = (props) => {
@@ -20,6 +21,8 @@ const Dialogs = (props) => {
   let dialogsElements = props.dialogsPage.dialogs.map(d => <DialogItem key={d.id} avatar={d.avatar} name={d.name} id={d.id} />)
   let messagElements = props.dialogsPage.messages.map(m => <Message key={m.id} message={m.message} id={m.id} idDialogs={m.idDialogs} />)
 
+  if (!props.nameMy) { return <Redirect to={'AuthContainer'} />
+}
   return (
     <div>
       <div className={classes.dialogs} >

@@ -4,7 +4,7 @@ import classes from './Maypost.module.css'
 
 const Maypost = (props) => {
 
-  let postElements = props.posts.map(p => <Post key={p.id} avatar={p.avatar} message={p.message} likesCount={p.likesCount} />);
+  let postElements = props.posts.map(p => <Post key={p.id} avatar={props.profil.avatar} message={p.doc.message} likesCount={p.doc.likesCount} />);
   return (
     <div>
       <div className={classes.item}>

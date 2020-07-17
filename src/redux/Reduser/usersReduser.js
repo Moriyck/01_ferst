@@ -59,7 +59,6 @@ const usersReduser = (state = initialState, action) => {
             }
 
         case SET_USERS_FOLLOW:
-            debugger
             if (action.usersFollow.length > 0) {
                 let lengthCount = action.usersFollow.length
                 let usersFollow = action.usersFollow
