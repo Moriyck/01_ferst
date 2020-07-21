@@ -4,14 +4,12 @@ import Profilinfo from './Profilinfo/Profilinfo'
 import Maypost from './Maypost/Maypost'
 import Preloader from '../../comon/preloader/preloader'
 import Newpost from './Maypost/New_post/Newpost'
-import { Redirect } from 'react-router-dom'
 
 const Profil = (props) => {
   if (!props.profil) {
     return <Preloader />
   }
-  if (!props.nameMy) { return <Redirect to={'AuthContainer'} />
-  }
+  
   return (
     <div className={classes.profil}>
       <div>

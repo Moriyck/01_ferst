@@ -4,12 +4,12 @@ const TOGAL_IS_FECHING = 'TOGAL_IS_FECHING'
 let initialState = {
 
     name: null,
-    isFetching: true,
-    isAuth: false
+    isAuth: false,
+    isFetching: true
 }
 
 const authReduser = (state = initialState, action) => {
-    
+
     switch (action.type) {
 
         case SET_AUTH_USER:

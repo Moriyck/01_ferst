@@ -1,6 +1,6 @@
 .dialogsItem {
     display: grid;
-    grid-template-columns: 0.5fr 1fr;
+    grid-template-columns: 0.5fr 2fr;
     padding: 10px;
 }
 

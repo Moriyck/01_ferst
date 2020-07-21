@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import Authentication from './Authentication'
 import { nameMyAPI } from '../../api/api'
+import { compose } from 'redux'
 
 class AuthContainer extends React.Component {
 
@@ -35,10 +36,10 @@ let mapStateToProps = (state) => {
     authPage: state.authPage,
     nameMy: state.authPage.name,
     isFetching: state.authPage.isFetching
-
   }
 }
 
-let WithDataContainerComponent = withRouter(AuthContainer)
-
-export default connect(mapStateToProps, { setAuthUser, totalIsFetchin })(WithDataContainerComponent, AuthContainer)
+export default compose(
+  connect(mapStateToProps, { setAuthUser, totalIsFetchin }),
+  withRouter
+)(AuthContainer)

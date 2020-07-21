@@ -3,6 +3,8 @@ import { updateNewPostText, getUsersProfile, getUsersPosts, postUsersPost } from
 import { connect } from 'react-redux'
 import Profil from './Profil'
 import { withRouter } from 'react-router-dom'
+import { withAuthRedirect } from '../../hoc/withAuthRedirectComponent'
+import { compose } from 'redux'
 
 class ProfilContainer extends React.Component {
 
@@ -11,20 +13,16 @@ class ProfilContainer extends React.Component {
     if (!userId) {
       userId = this.props.nameMy
     }
-    this.props.getUsersProfile(userId, this.props.nameMy)
+    this.props.getUsersProfile(userId)
     this.props.getUsersPosts(userId)
   }
 
   addPost = () => {
-    debugger
     this.props.postUsersPost(this.props.nameMy, this.props.profilePage.newPostText)
   }
   onPostCnage = (ref) => {
-    debugger
     this.props.updateNewPostText(ref.currentTarget.value)
   }
-
-
 
   render() {
     return (
@@ -41,15 +39,15 @@ class ProfilContainer extends React.Component {
   }
 }
 
-let mapStateToProps = (state) => {
-  return {
-    profilePage: state.profilePage,
-    profil: state.profilePage.profil,
-    isFetching: state.profilePage.isFetching,
-    nameMy: state.authPage.name
-  }
-}
+let AuthRedirectComponent = withAuthRedirect(ProfilContainer)
 
-let WithDataContainerComponent = withRouter(ProfilContainer)
+let mapStateToProps = (state) => ({
+  profilePage: state.profilePage,
+  isFetching: state.profilePage.isFetching
+})
 
-export default connect(mapStateToProps, { updateNewPostText, getUsersProfile, getUsersPosts, postUsersPost })(WithDataContainerComponent, ProfilContainer)
+export default compose(
+  connect(mapStateToProps, { updateNewPostText, getUsersProfile, getUsersPosts, postUsersPost }),
+  withRouter,
+  withAuthRedirect
+)(ProfilContainer)

@@ -1,12 +1,13 @@
 import React from 'react'
 import {
-  changeToFollow, changeToUnFollow, setUsersFollow, setTotalRows,
+  changeToFollow, changeToUnFollow, setTotalRows,
   totalIsFetchinProgress, getUsers, followThunk, followUnThunk
 } from "../../redux/Reduser/usersReduser"
 import Users from './Users'
 import Preloader from '../../comon/preloader/preloader'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
+import { compose } from 'redux'
 
 class UsersContainer extends React.Component {
 
@@ -19,8 +20,9 @@ class UsersContainer extends React.Component {
   }
 
   render() {
-    if (!this.props.nameMy) { return <Redirect to={'AuthContainer'} />
-  }
+    if (!this.props.nameMy) {
+      return <Redirect to={'AuthContainer'} />
+    }
     return (
       <div>
         <div>
@@ -51,12 +53,13 @@ let mapStateToProps = (state) => {
     skipSaze: state.usersPage.skipSaze,
     isFetching: state.usersPage.isFetching,
     followingInProgress: state.usersPage.followingInProgress,
-    authPage: state.authPage,
     nameMy: state.authPage.name
   }
 }
 
-export default connect(mapStateToProps, {
-  changeToFollow, changeToUnFollow,
-  setTotalRows, totalIsFetchinProgress, getUsers, followThunk, followUnThunk
-})(UsersContainer)
+export default compose(
+  connect(mapStateToProps, {
+    changeToFollow, changeToUnFollow,
+    setTotalRows, totalIsFetchinProgress, getUsers, followThunk, followUnThunk
+  })
+)(UsersContainer)

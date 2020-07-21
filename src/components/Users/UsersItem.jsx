@@ -17,7 +17,7 @@ const usersItem = (props) => {
     wordfollow = 'Unfollow'
   }
   else {
-    wordfollow = 'To follow'
+    wordfollow = 'Follow me'
   }
 
   let changeFolloww = () => {
@@ -28,6 +28,10 @@ const usersItem = (props) => {
     else {
       props.followUnThunk(userId, nameMy)
     }
+  }
+
+  let messageUserGo = () => {
+    let writ = 1
   }
 
   return (
@@ -41,6 +45,11 @@ const usersItem = (props) => {
         </div>
         <div>
           <button disabled={props.followingInProgress.some(id => id === userId)} onClick={changeFolloww}>{wordfollow}</button>
+        </div>
+        <div>
+          <NavLink to={'/Dialogs/' + userId}>
+            <button disabled={props.followingInProgress.some(id => id === userId)} onClick={messageUserGo}>Write a message</button>
+          </NavLink>
         </div>
       </div>
 

@@ -4,7 +4,7 @@ const SET_PROFIL = 'SET_PROFIL'
 const SET_USERS_POSTS = 'SET_USERS_POSTS'
 const ADD_POST = 'ADD_POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
-const TOGAL_IS_FECHING = 'TOGAL_IS_FECHING'
+const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
 
 let initialState = {
     posts: [],
@@ -53,7 +53,7 @@ const profilReduser = (state = initialState, action) => {
                 }
             }
 
-        case TOGAL_IS_FECHING:
+        case TOGGLE_IS_FETCHING:
             {
                 return {
                     ...state,
@@ -70,7 +70,7 @@ export const setProfil = (profil) => ({ type: SET_PROFIL, profil })
 export const setUsersPosts = (posts) => ({ type: SET_USERS_POSTS, posts })
 export const addPost = (userId) => ({ type: ADD_POST, userId })
 export const updateNewPostText = (text) => ({ type: UPDATE_NEW_POST_TEXT, text: text })
-export const totalIsFetchin = (isFetching) => ({ type: TOGAL_IS_FECHING, isFetching })
+export const totalIsFetchin = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
 
 export const getUsersProfile = (userId, nameMy) => {
     return (dispatch) => {
@@ -91,7 +91,6 @@ export const getUsersPosts = (userId) => {
 
 export const postUsersPost = (userId, message) => {
     return (dispatch) => {
-        debugger
         usersAPI.postUsersPost(userId, message).then(data => {
             dispatch(addPost(userId))
         })

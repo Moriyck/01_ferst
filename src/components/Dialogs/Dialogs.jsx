@@ -1,5 +1,5 @@
 import React from 'react'
-import Message from './Message/Message'
+
 import DialogItem from './Dialogitem/Dialogitem'
 import classes from './Dialogs.module.css'
 import { Redirect } from 'react-router-dom'
@@ -7,38 +7,24 @@ import { Redirect } from 'react-router-dom'
 
 const Dialogs = (props) => {
 
-  let newMessageElement = React.createRef()
+  let dialogsElements = props.dialogs.map(d => <DialogItem
+    key={d.doc.id}
+    avatar={d.doc.avatar}
+    author={d.doc.author}
+    id={d.doc.id}
+    interlocutor={d.doc.interlocutor}
+    messages={[d.doc.messages]}
+    profil={props.profil}
+    locutorAvatar={props.profil.avatar}
+    newMessageBody={props.dialogsPage.newMessageBody}
+  />)
 
-  let onSendMessageClick = () => {
-    props.sendMessage()
+  if (!props.nameMy) {
+    return <Redirect to={'AuthContainer'} />
   }
-
-  let onNewMessageCnage = (e) => {
-    let body = e.target.value
-    props.updateNewMessageBody(body)
-  }
-
-  let dialogsElements = props.dialogsPage.dialogs.map(d => <DialogItem key={d.id} avatar={d.avatar} name={d.name} id={d.id} />)
-  let messagElements = props.dialogsPage.messages.map(m => <Message key={m.id} message={m.message} id={m.id} idDialogs={m.idDialogs} />)
-
-  if (!props.nameMy) { return <Redirect to={'AuthContainer'} />
-}
   return (
-    <div>
-      <div className={classes.dialogs} >
-        <div>
-          {dialogsElements}
-        </div>
-        <div>
-          {messagElements}
-        </div>
-      </div>
-      <div>
-        <textarea onChange={onNewMessageCnage} ref={newMessageElement} value={props.dialogsPage.newMessageBody} placeholder="Write a new message"/>
-      </div>
-      <div>
-        <button onClick={onSendMessageClick}>Send</button>
-      </div>
+    <div className={classes.dialogs} >
+      {dialogsElements}
     </div>
   )
 }
