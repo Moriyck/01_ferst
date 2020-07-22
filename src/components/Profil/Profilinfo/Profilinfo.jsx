@@ -1,5 +1,6 @@
-import React from 'react'
-import classes from './Profilinfo.module.css'
+import React from 'react';
+import classes from './Profilinfo.module.css';
+import ProfilStatus from './ProfilStatus/ProfilStatus';
 
 const Profilinfo = (props) => {
 
@@ -22,7 +23,7 @@ const Profilinfo = (props) => {
         </div>
 
         <div>
-          Status: {props.profil.status}
+          <ProfilStatus status={props.profil.status} />
         </div>
 
         <div>

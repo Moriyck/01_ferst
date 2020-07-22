@@ -9,18 +9,12 @@ const Profil = (props) => {
   if (!props.profil) {
     return <Preloader />
   }
-  
+
   return (
     <div className={classes.profil}>
       <div>
-        <Profilinfo profil={props.profil}
-        />
-      </div>
-      <div>
-        <Maypost
+        <Profilinfo
           profil={props.profil}
-          posts={props.profilePage.posts}
-          
         />
       </div>
       <div className={classes.item}>
@@ -29,6 +23,12 @@ const Profil = (props) => {
           nameMy={props.nameMy}
           addPost={props.addPost}
           onPostCnage={props.onPostCnage}
+        />
+      </div>
+      <div>
+        <Maypost
+          profil={props.profil}
+          posts={props.profilePage.posts}
         />
       </div>
     </div>

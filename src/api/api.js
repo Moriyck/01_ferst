@@ -55,7 +55,8 @@ export const usersAPI = {
     },
 
     getUsersPosts(userId) {
-        return couchdbInstance.get(`posts/_design/posts/_view/myPosts?include_docs=true&inclusive_end=true&start_key="${userId}"&end_key="${userId}"`)
+        return couchdbInstance.get(`posts/_design/posts/_view/myPosts?include_docs=true&inclusive_end=true&start_key="${userId}"&end_key="${userId}"&descending=true`)
+                                 // posts/_design/posts/_view/myPosts?include_docs=true&inclusive_end=true&start_key="${userId}"&end_key="${userId}"&descending=true
             .then(response => {
                 return response.data
             })
@@ -69,9 +70,7 @@ export const usersAPI = {
         return couchdbInstance.post(`dialogs/`, {
             author: nameMy,
             interlocutor: interlocutor,
-            avatar: "https://yt3.ggpht.com/a/AGF-l7_CxhgKe6ZNB7syEdldsBeNPZYgvJLK2f_N=s900-c-k-c0xffffffff-no-rj-mo",
-            messages: ["Hi, this is a dialog number one", "Hi, this is a dialog number too"],
-            likesCount: 0
+            messages: []
         })
     },
 
