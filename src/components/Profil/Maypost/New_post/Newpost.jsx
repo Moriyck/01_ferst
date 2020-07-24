@@ -1,28 +1,35 @@
 import React from 'react'
 import classes from './Newpost.module.css'
+import { reduxForm, Field } from 'redux-form'
 
+const NewpostForm = (props) => {
+  return (
+    <div className={classes.newpost}>
+      <form id="newpost" onSubmit={props.handleSubmit}>
+        <div>
+          <Field id="newpost" type="text" name="newpost" placeholder="Write a new post" component="textarea" />
+        </div>
+        <div>
+          <button>Add post</button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+const NewpostReduxForm = reduxForm({ form: 'newpost' })(NewpostForm)
 const Newpost = (props) => {
-
-  let newPostElement = React.createRef()
-  
+  const onSubmit = (formData) => {
+    props.onSubmit(formData.newpost)
+  }
 
   return (
     <div className={classes.newpost}>
       <div>
-        <h3>
-          My post
-        </h3>
+        <h3>My post</h3>
       </div>
       <div>
-        <div>
-          <textarea onChange={props.onPostCnage} ref={newPostElement} value={props.newPostText} placeholder="Write a new post" />
-        </div>
-        <div>
-          <button onClick={props.addPost}>Add post</button>
-        </div>
-      </div>
-      <div>
-        New post
+        <NewpostReduxForm onSubmit={onSubmit} />
       </div>
     </div>
   )

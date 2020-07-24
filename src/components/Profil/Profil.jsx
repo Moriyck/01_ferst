@@ -15,14 +15,14 @@ const Profil = (props) => {
       <div>
         <Profilinfo
           profil={props.profil}
+          updateStatus={props.updateStatus}
         />
       </div>
       <div className={classes.item}>
         <Newpost
-          newPostText={props.profilePage.newPostText}
           nameMy={props.nameMy}
           addPost={props.addPost}
-          onPostCnage={props.onPostCnage}
+          onSubmit={props.onSubmit}
         />
       </div>
       <div>

@@ -1,6 +1,8 @@
 import { usersAPI } from "../../api/api"
+import { profileAPI } from "../../api/profileapi"
 
 const SET_PROFIL = 'SET_PROFIL'
+const OBSOLETE_UPDATE_STATUS = 'OBSOLETE_UPDATE_STATUS'
 const SET_USERS_POSTS = 'SET_USERS_POSTS'
 const ADD_POST = 'ADD_POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
@@ -26,7 +28,6 @@ const profilReduser = (state = initialState, action) => {
             let text = state.newPostText
             return {
                 ...state,
-                newPostText: '',
                 posts: [...state.posts,
                 {
                     doc: {
@@ -53,6 +54,15 @@ const profilReduser = (state = initialState, action) => {
                 }
             }
 
+        case OBSOLETE_UPDATE_STATUS:
+            return {
+                ...state,
+                ...state.profil,
+                status: action.status
+
+
+            }
+
         case TOGGLE_IS_FETCHING:
             {
                 return {
@@ -67,31 +77,39 @@ const profilReduser = (state = initialState, action) => {
 }
 
 export const setProfil = (profil) => ({ type: SET_PROFIL, profil })
+export const obsoleteUpdateStatus = (status) => ({ type: OBSOLETE_UPDATE_STATUS, status })
 export const setUsersPosts = (posts) => ({ type: SET_USERS_POSTS, posts })
 export const addPost = (userId) => ({ type: ADD_POST, userId })
 export const updateNewPostText = (text) => ({ type: UPDATE_NEW_POST_TEXT, text: text })
 export const totalIsFetchin = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
 
-export const getUsersProfile = (userId, nameMy) => {
+export const getProfile = (userId, nameMy) => {
     return (dispatch) => {
         dispatch(totalIsFetchin(true))
-        usersAPI.getUsersProfile(userId, nameMy).then(data => {
+        profileAPI.getProfile(userId, nameMy).then(data => {
             dispatch(setProfil(data))
         })
     }
 }
 
-export const getUsersPosts = (userId) => {
+export const updateStatus = (userId, doc, status, date) => {
     return (dispatch) => {
-        usersAPI.getUsersPosts(userId).then(data => {
+        dispatch(obsoleteUpdateStatus(status))
+        profileAPI.updateStatus(userId, doc, status, date)
+    }
+}
+
+export const getPosts = (userId) => {
+    return (dispatch) => {
+        profileAPI.getPosts(userId).then(data => {
             dispatch(setUsersPosts(data.rows))
         })
     }
 }
 
-export const postUsersPost = (userId, message) => {
+export const postPost = (userId, message) => {
     return (dispatch) => {
-        usersAPI.postUsersPost(userId, message).then(data => {
+        profileAPI.postPost(userId, message).then(data => {
             dispatch(addPost(userId))
         })
 

@@ -1,6 +1,6 @@
 import React from 'react'
-import { setMyDialods, updateNewMessageBody, getMyDialogs } from '../../redux/Reduser/dialogsReduser'
-import { getUsersProfile } from "../../redux/Reduser/profilReduser"
+import { putMessageDialogs, getMyDialogs } from '../../redux/Reduser/dialogsReduser'
+import { getProfile } from "../../redux/Reduser/profilReduser"
 import Dialogs from './Dialogs'
 import { connect } from 'react-redux'
 import Preloader from '../../comon/preloader/preloader'
@@ -16,15 +16,11 @@ class DialodsContainer extends React.Component {
       userId = this.props.nameMy
     }
     this.props.getMyDialogs(userId)
-    this.props.getUsersProfile(userId)
+    this.props.getProfile(userId)
   }
 
-  onNewMessageCnage = () => {
-
-  }
-
-  onSendMessageClick = () => {
-
+  onSubmit = (idDialogs, doc, message) => {
+    this.props.putMessageDialogs(idDialogs, doc, this.props.nameMy, message)
   }
 
   render() {
@@ -37,10 +33,9 @@ class DialodsContainer extends React.Component {
         <Dialogs
           {...this.props}
           dialogs={this.props.dialogsPage.dialogs}
-          onPageChanged={this.onNewMessageCnage}
-          onSendMessageClick={this.onSendMessageClick}
           nameMy={this.props.nameMy}
           profil={this.props.profilePage.profil}
+          onSubmit={this.onSubmit}
         />
       </div>
     )
@@ -56,7 +51,7 @@ let mapStateToProps = (state) => ({
 })
 
 export default compose(
-  connect(mapStateToProps, { setMyDialods, updateNewMessageBody, getMyDialogs, getUsersProfile }),
+  connect(mapStateToProps, { putMessageDialogs, getMyDialogs, getProfile }),
   withRouter,
   withAuthRedirect
 )(DialodsContainer)

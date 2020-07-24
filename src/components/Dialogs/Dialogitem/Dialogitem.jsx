@@ -1,50 +1,47 @@
 import React from 'react'
 import Message from './Message/Message'
 import classes from './Dialogsitem.module.css'
-import { NavLink } from 'react-router-dom'
+import { reduxForm, Field } from 'redux-form'
 
+const DialogForm = (props) => {
+  return (
+    <div>
+      <form id="login" onSubmit={props.handleSubmit}>
+        <Field id="dialogMessageText" type="text" name="dialogMessageText" placeholder="Write a new message" component="textarea" />
+        <button>Send</button>
+      </form>
+    </div>
+  )
+}
+
+const DialogReduxForm = reduxForm({ form: 'dialogText' })(DialogForm)
 const DialogItem = (props) => {
-  
-  let path = `/Dialogs/${props.author}`
-  let newMessageElement = React.createRef()
-
-  let onSendMessageClick = () => {
-    props.sendMessage()
-  }
-
-  let onNewMessageCnage = (e) => {
-    let body = e.target.value
-    props.updateNewMessageBody(body)
-  }
 
   let messageEl = props.messages.map(m => <Message
-    message={[m]}
+    author={m.author}
+    message={m.message}
   />)
+
+  const onSubmit = (formData) => {
+    props.onSubmit(props.id, props.doc, formData.dialogMessageText)
+  }
 
   return (
     <div className={classes.dialogsItem}>
       <div>
-
         <img src={props.locutorAvatar}></img>
         Dialog with: {props.interlocutor}
-
       </div>
       <div>
-        <div className={`${classes.dialog} ${classes.active}`}>
-          <img src={props.avatar}></img>
-          {<NavLink to={path}>{props.author}</NavLink>}
-        </div>
         <div>
           {messageEl}
         </div>
         <div>
-          <textarea onChange={onNewMessageCnage} ref={newMessageElement} value={props.newMessageBody} placeholder="Write a new message" />
-          <button onClick={onSendMessageClick}>Send</button>
+          <DialogReduxForm onSubmit={onSubmit} />
         </div>
       </div>
     </div>
   )
 }
 
-
-export default DialogItem;
+export default DialogItem

@@ -1,15 +1,11 @@
-import { usersAPI } from "../../api/api"
+import { dialogsAPI } from "../../api/apiDialogs"
 
-const UPDATE_NEW_MESSAGE_BODY = 'UPDATE_NEW_MESSAGE_BODY'
 const SEND_MESSAGE = 'SEND_MESSAGE'
 const SET_MY_DIALOGS = 'SET_MY_DIALOGS'
 
 let initialState = {
 
-    dialogs: [],
-    messages: [],
-    newMessageBody: ''
-
+    dialogs: []
 }
 
 const dialogsReduser = (state = initialState, action) => {
@@ -22,18 +18,15 @@ const dialogsReduser = (state = initialState, action) => {
             }
 
         case SEND_MESSAGE:
-            let body = state.newMessageBody
             return {
                 ...state,
-                newMessageBody: '',
-                messages: [...state.messages, { id: 6, idDialogs: 1, message: body }]
-            }
-
-        case UPDATE_NEW_MESSAGE_BODY:
-            return {
-                ...state,
-                messages: [...state.messages],
-                newMessageBody: action.body
+                ...state.dialogs,
+                messages: [...action.doc.messages,
+                {
+                    author: action.author,
+                    message: action.message
+                }
+                ]
             }
 
         default:
@@ -43,13 +36,21 @@ const dialogsReduser = (state = initialState, action) => {
 }
 
 export const setMyDialods = (dialogs) => ({ type: SET_MY_DIALOGS, dialogs })
-export const sendMessage = () => ({ type: SEND_MESSAGE })
-export const updateNewMessageBody = (body) => ({ type: UPDATE_NEW_MESSAGE_BODY, body })
+export const sendMessage = (doc, author, message) => ({ type: SEND_MESSAGE, doc, author, message })
+
 
 export const getMyDialogs = (nameMy) => {
     return (dispatch) => {
-        usersAPI.getMyDialogs(nameMy).then(data => {
+        dialogsAPI.getMyDialogs(nameMy).then(data => {
             dispatch(setMyDialods(data.rows))
+        })
+    }
+}
+
+export const putMessageDialogs = (idDialogs, doc, author, message) => {
+    return (dispatch) => {
+        dialogsAPI.putMessageDialogs(idDialogs, doc, author, message).then(data => {
+            dispatch(sendMessage(doc, author, message))
         })
     }
 }

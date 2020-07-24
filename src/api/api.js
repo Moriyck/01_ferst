@@ -1,20 +1,5 @@
 import *as axios from 'axios'
 
-const nameMyInstance = axios.create({
-    withCredentials: true,
-    baseURL: `http://127.0.0.1:5984/`
-})
-
-export const nameMyAPI = {
-    getNameMy() {
-        return nameMyInstance.get(`_session`)
-            .then(response => {
-                return response.data
-            })
-    }
-
-}
-
 const couchdbInstance = axios.create({
     withCredentials: true,
     baseURL: `http://127.0.0.1:5984/`
@@ -41,46 +26,18 @@ export const usersAPI = {
 
     postFollow(userId, nameMy) {
         return couchdbInstance.post(`follow/${userId}`, { nameMy: nameMy, type: 'follow' })
-    },
+    }
+}
 
-    putFollow(userId, nameMy) {
-        return couchdbInstance.put(`follow/${userId}`, { nameMy: nameMy, type: 'follow' })
-    },
-
-    getUsersProfile(userId) {
+export const profileAPI = {
+    getProfile(userId) {
         return couchdbInstance.get(`profile/${userId}`)
             .then(response => {
                 return response.data
             })
     },
 
-    getUsersPosts(userId) {
-        return couchdbInstance.get(`posts/_design/posts/_view/myPosts?include_docs=true&inclusive_end=true&start_key="${userId}"&end_key="${userId}"&descending=true`)
-                                 // posts/_design/posts/_view/myPosts?include_docs=true&inclusive_end=true&start_key="${userId}"&end_key="${userId}"&descending=true
-            .then(response => {
-                return response.data
-            })
-    },
-
-    postUsersPost(nameMy, message) {
-        return couchdbInstance.post(`posts/`, { author: nameMy, message: message, likesCount: 0 })
-    },
-
-    postMyDialogs(interlocutor, nameMy) {
-        return couchdbInstance.post(`dialogs/`, {
-            author: nameMy,
-            interlocutor: interlocutor,
-            messages: []
-        })
-    },
-
-    getMyDialogs(nameMy) {
-        return couchdbInstance.get(`dialogs/_design/dialogs/_view/myDialogs?include_docs=true&inclusive_end=true&start_key="${nameMy}"`)
-            .then(response => {
-                return response.data
-            })
+    updateStatus(userId, doc, status, data) {
+        return couchdbInstance.put(`profile/${userId}`, { ...doc, status: status, data: data })
     }
-
 }
-
-//(`dialogs/_design/dialogs/_view/myDialogs?include_docs=true&inclusive_end=true&start_key=%5B%20%22${nameMy}%22%2C%20%22${userId}%22%20%5D&end_key=%5B%20%22${nameMy}%22%2C%20%22${userId}%22%20%5D`

@@ -1,7 +1,7 @@
 import React from 'react'
-import { updateNewPostText, getUsersProfile, getUsersPosts, postUsersPost } from "../../redux/Reduser/profilReduser"
-import { connect } from 'react-redux'
 import Profil from './Profil'
+import { connect } from 'react-redux'
+import { updateNewPostText, getProfile, getPosts, postPost, updateStatus } from "../../redux/Reduser/profilReduser"
 import { withRouter } from 'react-router-dom'
 import { withAuthRedirect } from '../../hoc/withAuthRedirectComponent'
 import { compose } from 'redux'
@@ -13,15 +13,17 @@ class ProfilContainer extends React.Component {
     if (!userId) {
       userId = this.props.nameMy
     }
-    this.props.getUsersProfile(userId)
-    this.props.getUsersPosts(userId)
+    this.props.getProfile(userId)
+    this.props.getPosts(userId)
   }
 
-  addPost = () => {
-    this.props.postUsersPost(this.props.nameMy, this.props.profilePage.newPostText)
+  updateStatus = (status) => {
+    this.props.updateStatus(this.props.nameMy, this.props.profilePage.profil, status, '23.07.2020')
   }
-  onPostCnage = (ref) => {
-    this.props.updateNewPostText(ref.currentTarget.value)
+
+  onSubmit = (newPost) => {
+    this.props.postPost(this.props.nameMy, newPost)
+    this.props.updateNewPostText(newPost)
   }
 
   render() {
@@ -31,15 +33,13 @@ class ProfilContainer extends React.Component {
           nameMy={this.props.nameMy}
           profil={this.props.profilePage.profil}
           newPostText={this.props.profilePage.newPostText}
-          addPost={this.addPost}
-          onPostCnage={this.onPostCnage}
+          onSubmit={this.onSubmit}
+          updateStatus={this.updateStatus}
         />
       </div>
     )
   }
 }
-
-let AuthRedirectComponent = withAuthRedirect(ProfilContainer)
 
 let mapStateToProps = (state) => ({
   profilePage: state.profilePage,
@@ -47,7 +47,7 @@ let mapStateToProps = (state) => ({
 })
 
 export default compose(
-  connect(mapStateToProps, { updateNewPostText, getUsersProfile, getUsersPosts, postUsersPost }),
+  connect(mapStateToProps, { updateNewPostText, getProfile, getPosts, postPost, updateStatus }),
   withRouter,
   withAuthRedirect
 )(ProfilContainer)

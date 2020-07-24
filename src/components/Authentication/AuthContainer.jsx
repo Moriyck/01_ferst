@@ -1,30 +1,31 @@
 import React from 'react'
-import { setAuthUser, totalIsFetchin } from '../../redux/Reduser/authReduser'
+import { putNameMyPassword, getNameMy, setAuthUser, totalIsFetchin } from '../../redux/Reduser/authReduser'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import Authentication from './Authentication'
-import { nameMyAPI } from '../../api/api'
 import { compose } from 'redux'
 
 class AuthContainer extends React.Component {
 
   componentDidMount() {
-    this.props.totalIsFetchin(true)
-    nameMyAPI.getNameMy().then(data => {
-      this.props.totalIsFetchin(false)
-      this.props.setAuthUser(data.userCtx.name)
-    })
+    this.props.getNameMy()
+  }
+  onSubmit(nameMy, password) {
+    this.putNameMyPassword(nameMy, password)
   }
 
   render() {
-
     return (
       <div>
         <div>
           Hello, {this.props.nameMy}
         </div>
         <div>
-          {this.props.nameMy === null ? <Authentication {...this.props} /> : null}
+          {this.props.nameMy === null ?
+            <  Authentication
+              {...this.props}
+              onSubmit={this.onSubmit}
+            /> : null}
         </div>
       </div>
     )
@@ -40,6 +41,6 @@ let mapStateToProps = (state) => {
 }
 
 export default compose(
-  connect(mapStateToProps, { setAuthUser, totalIsFetchin }),
+  connect(mapStateToProps, { putNameMyPassword, getNameMy, setAuthUser, totalIsFetchin }),
   withRouter
 )(AuthContainer)

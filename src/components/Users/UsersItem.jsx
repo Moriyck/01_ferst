@@ -59,7 +59,6 @@ const usersItem = (props) => {
           <div>
             Nicname: {props.name}
           </div>
-
           <div>
             id: {props.id}
           </div>
@@ -75,11 +74,11 @@ const usersItem = (props) => {
           <div>
             Country: {props.country}
           </div>
-
           <div>
             City: {props.city}
           </div>
         </div>
+
       </div>
     </div>
   )
