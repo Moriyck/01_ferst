@@ -1,4 +1,4 @@
-import *as axios from 'axios'
+import * as axios from 'axios'
 
 const nameMyInstance = axios.create({
     withCredentials: true,
@@ -6,16 +6,28 @@ const nameMyInstance = axios.create({
 })
 
 export const nameMyPasswordAPI = {
-    putNameMyPassword(nameMy, password) {
-        return nameMyInstance.post(`_session`, { name: nameMy, password: password })
-    }
-}
 
-export const nameMyAPI = {
     getNameMy() {
         return nameMyInstance.get(`_session`)
             .then(response => {
                 return response.data
             })
+    },
+
+    postNameMyPassword(nameMy, password) {
+
+        return nameMyInstance.post(`_session`, { name: nameMy, password: password })
+            .then(response => {
+                return response
+            })
+            .catch(error => {
+                return error.response
+            })
+    },
+
+    deleteNameMyPassword() {
+        return nameMyInstance.delete(`_session`)
+
     }
 }
+

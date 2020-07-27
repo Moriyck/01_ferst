@@ -1,34 +1,33 @@
 import React from 'react'
+import Header from './Header'
 import {
   postNameMyPassword, getNameMy, setAuthUser,
-  totalIsFetchin
+  totalIsFetchin, deleteNameMyPassword
 } from '../../redux/Reduser/authReduser'
 import { connect } from 'react-redux'
 import { withRouter, Redirect } from 'react-router-dom'
-import Authentication from './Authentication'
 import { compose } from 'redux'
+import classes from './Header.module.css'
 
-class AuthContainer extends React.Component {
+class HeaderContainer extends React.Component {
 
   componentDidMount() {
     this.props.getNameMy()
   }
 
-  onSubmit(nameMy, password) {
-    this.postNameMyPassword(nameMy, password)
+  logAut() {
+    this.deleteNameMyPassword()
   }
 
   render() {
     return (
-      <div>
-        <div>
-          {this.props.nameMy === null ?
-            <  Authentication
-              {...this.props}
-              onSubmit={this.onSubmit}
-            /> : <Redirect to={'/Profile'} />}
-        </div>
-      </div >
+      <header className={classes.header}>
+        <Header
+          {...this.props}
+          logAut={this.logAut}
+          nameMy={this.props.nameMy}
+        />
+      </header>
     )
   }
 }
@@ -44,7 +43,7 @@ let mapStateToProps = (state) => {
 export default compose(
   connect(mapStateToProps, {
     postNameMyPassword, getNameMy, setAuthUser,
-    totalIsFetchin
+    totalIsFetchin, deleteNameMyPassword
   }),
   withRouter
-)(AuthContainer)
+)(HeaderContainer)

@@ -1,4 +1,5 @@
 import { nameMyPasswordAPI, nameMyAPI } from "../../api/apiNameMy"
+import { stopSubmit } from "redux-form"
 
 const SET_AUTH_USER = 'SET_AUTH_USER'
 const TOGAL_IS_FECHING = 'TOGAL_IS_FECHING'
@@ -38,23 +39,36 @@ const authReduser = (state = initialState, action) => {
 export const setAuthUser = (name) => ({ type: SET_AUTH_USER, name })
 export const totalIsFetchin = (isFetching) => ({ type: TOGAL_IS_FECHING, isFetching })
 
-export const putNameMyPassword = (nameMy, password) => {
+export const postNameMyPassword = (nameMy, password) => {
     return (dispatch) => {
-        nameMyPasswordAPI.putNameMyPassword(nameMy, password)
+        nameMyPasswordAPI.postNameMyPassword(nameMy, password)
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(setAuthUser(response.data.name))
+                }
+                else {
+                    dispatch(stopSubmit('login', { _error: response.data.error + " " + response.data.reason }))
+                }
+            })
     }
 }
+
+export const deleteNameMyPassword = () => {
+    return (dispatch) => {
+        nameMyPasswordAPI.deleteNameMyPassword()
+        dispatch(setAuthUser(null))
+    }
+}
+
 
 export const getNameMy = () => {
     return (dispatch) => {
         dispatch(totalIsFetchin(true))
-        nameMyAPI.getNameMy().then(data => {
+        nameMyPasswordAPI.getNameMy().then(data => {
             dispatch(totalIsFetchin(false))
             dispatch(setAuthUser(data.userCtx.name))
         })
     }
 }
-
-
-
 
 export default authReduser
