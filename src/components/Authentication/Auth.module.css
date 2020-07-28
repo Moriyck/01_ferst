@@ -1,6 +1,23 @@
+.appWrapper {
+    margin: 0 auto;
+    display: grid;
+    width: 1200px;
+  
+    grid-template-areas:
+    "h h"
+    "n c"
+    "f f";
+    grid-template-rows: 100px 1fr 80px;
+    grid-template-columns: 2fr 10fr;
+    /*grid-gap: 10px;*/
+  }
+  .appWrapperContent {
+    grid-area: c;
+    margin: 10px;
+    padding: 1px;
+  }
+
 .authentication {
     grid-area: c;
-    background-color: #006CA7;
-    color: rgb(248, 247, 247);
     padding: 1px;
 }

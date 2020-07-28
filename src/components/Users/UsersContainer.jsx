@@ -1,13 +1,19 @@
 import React from 'react'
 import {
   changeToFollow, changeToUnFollow, setTotalRows,
-  totalIsFetchinProgress, getUsers, followThunk, followUnThunk
+  totalIsFetchinProgress, getUsers, followThunk,
+  followUnThunk
 } from "../../redux/Reduser/usersReduser"
 import Users from './Users'
 import Preloader from '../../comon/preloader/preloader'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { compose } from 'redux'
+import {
+  getUsersSelect, pageSazeSelect, totalPageCountSelect,
+  currontPageSelect, gskipSazeSelect, isFetchingSelect,
+  followingInProgress
+} from '../../redux/Reduser/usersSelctor'
 
 class UsersContainer extends React.Component {
 
@@ -44,7 +50,7 @@ class UsersContainer extends React.Component {
   }
 }
 
-let mapStateToProps = (state) => {
+/*{let mapStateToProps = (state) => {
   return {
     users: state.usersPage.users,
     pageSaze: state.usersPage.pageSaze,
@@ -53,6 +59,19 @@ let mapStateToProps = (state) => {
     skipSaze: state.usersPage.skipSaze,
     isFetching: state.usersPage.isFetching,
     followingInProgress: state.usersPage.followingInProgress,
+    nameMy: state.authPage.name
+  }
+}}*/
+
+let mapStateToProps = (state) => {
+  return {
+    users: getUsersSelect(state),
+    pageSaze: pageSazeSelect(state),
+    totalPageCount: totalPageCountSelect(state),
+    currontPage: currontPageSelect(state),
+    skipSaze: gskipSazeSelect(state),
+    isFetching: isFetchingSelect(state),
+    followingInProgress: followingInProgress(state),
     nameMy: state.authPage.name
   }
 }

@@ -4,7 +4,7 @@ let initialState = {
         { id: 2, name: 'Dialogs', to: '/Dialogs', activeClassName: 'classes.activelink' },
         { id: 3, name: 'News', to: '/News', activeClassName: 'classes.activelink' },
         { id: 4, name: 'Music', to: '/Music', activeClassName: 'classes.activelink' },
-        { id: 4, name: 'Authentication', to: '/Authentication', activeClassName: 'classes.activelink' }
+        //{ id: 4, name: 'Authentication', to: '/Authentication', activeClassName: 'classes.activelink' }
     ],
 
     usersLink: [

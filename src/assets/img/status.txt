@@ -1,1 +1,0 @@
-Obsolete method. Use the profileAPI method

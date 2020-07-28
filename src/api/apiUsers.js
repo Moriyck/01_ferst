@@ -28,16 +28,3 @@ export const usersAPI = {
         return couchdbInstance.post(`follow/${userId}`, { nameMy: nameMy, type: 'follow' })
     }
 }
-
-export const profileAPI = {
-    getProfile(userId) {
-        return couchdbInstance.get(`profile/${userId}`)
-            .then(response => {
-                return response.data
-            })
-    },
-
-    updateStatus(userId, doc, status, data) {
-        return couchdbInstance.put(`profile/${userId}`, { ...doc, status: status, data: data })
-    }
-}

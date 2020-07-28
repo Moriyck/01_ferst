@@ -1,5 +1,5 @@
-import { usersAPI } from "../../api/api"
-import { profileAPI } from "../../api/profileapi"
+import { profileAPI } from "../../api/apiProfile"
+
 
 const SET_PROFIL = 'SET_PROFIL'
 const OBSOLETE_UPDATE_STATUS = 'OBSOLETE_UPDATE_STATUS'

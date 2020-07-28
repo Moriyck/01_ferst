@@ -1,5 +1,5 @@
 import React from 'react'
-import classes from './AuthContainer'
+import classes from './Auth.module.css'
 import { reduxForm, Field } from 'redux-form'
 import { Input } from '../../comon/FormsControls/FormsControls'
 import { requiredField, minLengthCreator } from '../../utils/validators/validator'

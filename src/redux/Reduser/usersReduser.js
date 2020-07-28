@@ -1,5 +1,4 @@
-import { act } from "react-dom/test-utils"
-import { usersAPI } from "../../api/api"
+import { usersAPI } from "../../api/apiUsers"
 
 const TO_FOLLOW = 'TO_FOLLOW'
 const TO_UN_FOLLOW = 'TO_UN_FOLLOW'
@@ -80,7 +79,6 @@ const usersReduser = (state = initialState, action) => {
                 }
             }
 
-
         case SET_CURRONT_PAGE:
             return {
                 ...state,
@@ -105,7 +103,6 @@ const usersReduser = (state = initialState, action) => {
                 followingInProgress: action.followingInProgress
                     ? [...state.followingInProgress, action.userId]
                     : state.followingInProgress.filter(id => id != action.userId)
-
             }
 
         default:
