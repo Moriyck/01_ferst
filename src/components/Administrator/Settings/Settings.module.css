@@ -1,0 +1,21 @@
+.button{
+    width: 100px;
+    height: 100px;
+    border: solid #006400 1px;
+    border-radius: 2px;
+    align-items: center;
+    padding: 3px;
+    margin: 2px;
+}
+
+.activelink{
+    width: 100px;
+    height: 100px;
+    color: rgb(255, 255, 255);
+    background-color: #006400;
+    border: solid #006400 1px;
+    border-radius: 2px;
+    align-items: center;
+    padding: 3px;
+    margin: 2px;
+}

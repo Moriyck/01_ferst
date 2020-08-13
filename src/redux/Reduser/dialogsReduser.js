@@ -38,21 +38,16 @@ const dialogsReduser = (state = initialState, action) => {
 export const setMyDialods = (dialogs) => ({ type: SET_MY_DIALOGS, dialogs })
 export const sendMessage = (doc, author, message) => ({ type: SEND_MESSAGE, doc, author, message })
 
-
-export const getMyDialogs = (nameMy) => {
-    return (dispatch) => {
-        dialogsAPI.getMyDialogs(nameMy).then(data => {
-            dispatch(setMyDialods(data.rows))
-        })
+export const getMyDialogs = (nameMy) =>
+    async (dispatch) => {
+        const data = await dialogsAPI.getMyDialogs(nameMy)
+        dispatch(setMyDialods(data.rows))
     }
-}
 
-export const putMessageDialogs = (idDialogs, doc, author, message) => {
-    return (dispatch) => {
-        dialogsAPI.putMessageDialogs(idDialogs, doc, author, message).then(data => {
-            dispatch(sendMessage(doc, author, message))
-        })
+export const putMessageDialogs = (idDialogs, doc, author, message) =>
+    async (dispatch) => {
+        dialogsAPI.putMessageDialogs(idDialogs, doc, author, message)
+        dispatch(sendMessage(doc, author, message))
     }
-}
 
 export default dialogsReduser

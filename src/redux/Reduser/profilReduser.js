@@ -1,17 +1,19 @@
 import { profileAPI } from "../../api/apiProfile"
 
-
 const SET_PROFIL = 'SET_PROFIL'
+const SHOW_ERROR = 'SHOW_ERROR'
 const OBSOLETE_UPDATE_STATUS = 'OBSOLETE_UPDATE_STATUS'
 const SET_USERS_POSTS = 'SET_USERS_POSTS'
 const ADD_POST = 'ADD_POST'
 const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT'
 const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING'
+const ADD_IMAGE = 'ADD_IMAGE'
 
 let initialState = {
     posts: [],
     profil: [],
-    newPostText: ''
+    newPostText: '',
+    error: []
 }
 
 
@@ -22,6 +24,12 @@ const profilReduser = (state = initialState, action) => {
             return {
                 ...state,
                 posts: action.posts
+            }
+
+        case SHOW_ERROR:
+            return {
+                ...state,
+                error: action.error
             }
 
         case ADD_POST:
@@ -71,49 +79,79 @@ const profilReduser = (state = initialState, action) => {
                 }
             }
 
+        case ADD_IMAGE:
+            debugger
+            {
+                return {
+                    ...state,
+                    profil: { ...state.profil, avatar: action.avatar }
+                }
+            }
+
         default:
             return state
     }
 }
 
 export const setProfil = (profil) => ({ type: SET_PROFIL, profil })
+export const showError = (error) => ({ type: SHOW_ERROR, error })
 export const obsoleteUpdateStatus = (status) => ({ type: OBSOLETE_UPDATE_STATUS, status })
 export const setUsersPosts = (posts) => ({ type: SET_USERS_POSTS, posts })
 export const addPost = (userId) => ({ type: ADD_POST, userId })
-export const updateNewPostText = (text) => ({ type: UPDATE_NEW_POST_TEXT, text: text })
+export const updateNewPostText = (text) => ({ type: UPDATE_NEW_POST_TEXT, text })
 export const totalIsFetchin = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
+export const addImage = (avatar) => ({ type: ADD_IMAGE, avatar })
 
-export const getProfile = (userId, nameMy) => {
-    return (dispatch) => {
+export const getProfile = (userId) =>
+    async (dispatch) => {
         dispatch(totalIsFetchin(true))
-        profileAPI.getProfile(userId, nameMy).then(data => {
-            dispatch(setProfil(data))
-        })
+        profileAPI.getProfile(userId)
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(setProfil(response.data))
+                }
+                else {
+                    dispatch(showError(response.data.error))
+                }
+            })
     }
-}
 
-export const updateStatus = (userId, doc, status, date) => {
-    return (dispatch) => {
+export const updateProfile = (userId, propername, surname, birthdate) =>
+    async (dispatch) => {
+
+        profileAPI.updateProfile(userId, propername, surname, birthdate)
+            .then(response => {
+                if (response.status === 200) {
+                    dispatch(setProfil(userId, propername, surname, birthdate))
+                }
+                else {
+                    dispatch(showError(response.data.error))
+                }
+            })
+    }
+
+export const updateStatus = (userId, doc, status, date) =>
+    async (dispatch) => {
         dispatch(obsoleteUpdateStatus(status))
         profileAPI.updateStatus(userId, doc, status, date)
     }
-}
 
-export const getPosts = (userId) => {
-    return (dispatch) => {
-        profileAPI.getPosts(userId).then(data => {
-            dispatch(setUsersPosts(data.rows))
-        })
+export const getPosts = (userId) =>
+    async (dispatch) => {
+        const data = await profileAPI.getPosts(userId)
+        dispatch(setUsersPosts(data.rows))
     }
-}
 
-export const postPost = (userId, message) => {
-    return (dispatch) => {
-        profileAPI.postPost(userId, message).then(data => {
-            dispatch(addPost(userId))
-        })
-
+export const postPost = (userId, message) =>
+    async (dispatch) => {
+        profileAPI.postPost(userId, message)
+        dispatch(addPost(userId))
     }
-}
+
+export const fileTheDownload = (userId, rev, faileData) =>
+    async (dispatch) => {
+        profileAPI.fileTheDownload(userId, rev, faileData)
+        dispatch(addImage(faileData.name))
+    }
 
 export default profilReduser
