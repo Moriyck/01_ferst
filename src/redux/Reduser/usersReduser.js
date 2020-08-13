@@ -1,4 +1,5 @@
 import { usersAPI } from "../../api/apiUsers"
+//import { updateObjectInArray } from "../../utils/validators/objectHelper"
 
 const TO_FOLLOW = 'TO_FOLLOW'
 const TO_UN_FOLLOW = 'TO_UN_FOLLOW'
@@ -12,9 +13,13 @@ const TOGAL_IS_FECHING_PROGRESS = 'TOGAL_IS_FECHING_PROGRESS'
 let initialState = {
 
     users: [],
+
+    // paginator
     pageSaze: 3,
     totalPageCount: 0,
     currontPage: 1,
+
+    //
     isFetching: true,
     followingInProgress: []
 }
@@ -29,7 +34,6 @@ const usersReduser = (state = initialState, action) => {
             }
 
         case TO_FOLLOW:
-
             return {
                 ...state,
                 users: state.users.map(u => {
@@ -58,25 +62,17 @@ const usersReduser = (state = initialState, action) => {
             }
 
         case SET_USERS_FOLLOW:
-            if (action.usersFollow.length > 0) {
-                let lengthCount = action.usersFollow.length
-                let usersFollow = action.usersFollow
-                for (let i = 0; i <= lengthCount; i++) {
-                    let userFollow = usersFollow[i]
-                    return {
-                        ...state,
-                        users: state.users.map(u => {
-                            if (userFollow.id === u.id)
-                                return {
-                                    ...u,
-                                    doc: {
-                                        ...u.doc, follow: true, revFollow: userFollow.doc._rev, nameMy: userFollow.doc.nameMy
-                                    }
-                                }
-                            return u
-                        })
+            return {
+                ...state,
+                users: state.users.map(u => {
+                    if (action.data && u.id === action.data.key) {
+                        return {
+                            ...u,
+                            doc: { ...u.doc, follow: true, revFollow: action.data.doc._rev, idFollow: action.data.doc._id }
+                        }
                     }
-                }
+                    return u
+                })
             }
 
         case SET_CURRONT_PAGE:
@@ -102,63 +98,58 @@ const usersReduser = (state = initialState, action) => {
                 ...state,
                 followingInProgress: action.followingInProgress
                     ? [...state.followingInProgress, action.userId]
-                    : state.followingInProgress.filter(id => id != action.userId)
+                    : state.followingInProgress.filter(id => id !== action.userId)
             }
 
         default:
             return state
     }
-
 }
+
 export const changeToFollow = (userId) => ({ type: TO_FOLLOW, userId })
 export const changeToUnFollow = (userId) => ({ type: TO_UN_FOLLOW, userId })
 export const setUsers = (users) => ({ type: SET_USERS, users })
-export const setUsersFollow = (usersFollow) => ({ type: SET_USERS_FOLLOW, usersFollow })
+export const setUsersFollow = (data) => ({ type: SET_USERS_FOLLOW, data })
 export const setCurrontPage = (currontPage) => ({ type: SET_CURRONT_PAGE, currontPage })
 export const setTotalRows = (totalRows) => ({ type: SET_TOTAL_ROWS, totalRows })
 export const totalIsFetchin = (isFetching) => ({ type: TOGAL_IS_FECHING, isFetching })
 export const totalIsFetchinProgress = (followingInProgress, userId) => ({ type: TOGAL_IS_FECHING_PROGRESS, followingInProgress, userId })
 
-export const getUsers = (pageSaze, currontPage) => {
-    return (dispatch) => {
+export const getUsers = (pageSaze, currontPage) =>
+    async (dispatch) => {
         dispatch(totalIsFetchin(true))
         let skipSaze = (pageSaze * currontPage) - pageSaze
-        usersAPI.getUsers(pageSaze, skipSaze).then(data => {
+        const data = await usersAPI.getUsers(pageSaze, skipSaze)
+        if (data) {
             dispatch(totalIsFetchin(false))
             dispatch(setUsers(data.rows))
+            data.rows.map(u => {
+                usersAPI.getUsersFollow(u.id)
+                    .then(data => {
+                        if (data) {
+                            dispatch(setUsersFollow(data[0]))
+                        }
+                    })
+            })
             dispatch(setTotalRows(data.total_rows))
             dispatch(setCurrontPage(currontPage))
-        })
-
-        usersAPI.getUsersFollow().then(data => {
-            dispatch(setUsersFollow(data.rows))
-        })
-
+        }
     }
-}
 
-export const followThunk = (userId, revFollow) => {
-    return (dispatch) => {
+export const followUnThunk = (userId, idFollow, revFollow) =>
+    async (dispatch) => {
         dispatch(totalIsFetchinProgress(true, userId))
-        usersAPI.deleteFollow(userId, revFollow).then(data => {
-            dispatch(totalIsFetchinProgress(false, userId))
-            if (data.ok === true)
-                dispatch(totalIsFetchinProgress(true, userId))
-            dispatch(changeToUnFollow(userId))
-        })
+        usersAPI.deleteFollow(idFollow, revFollow)
+        dispatch(totalIsFetchinProgress(false, userId))
+        dispatch(changeToUnFollow(userId))
     }
-}
 
-export const followUnThunk = (userId, nameMy) => {
-    return (dispatch) => {
+export const followThunk = (userId, nameMy) =>
+    async (dispatch) => {
         dispatch(totalIsFetchinProgress(true, userId))
-        usersAPI.putFollow(userId, nameMy).then(data => {
-            dispatch(totalIsFetchinProgress(false, userId))
-            if (data.ok === true)
-                dispatch(totalIsFetchinProgress(true, userId))
-            dispatch(changeToFollow(userId))
-        })
+        usersAPI.postFollow(userId, nameMy)
+        dispatch(totalIsFetchinProgress(false, userId))
+        dispatch(changeToFollow(userId))
     }
-}
 
 export default usersReduser

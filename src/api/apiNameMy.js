@@ -1,14 +1,33 @@
 import * as axios from 'axios'
+import { baseUrlLocalCouchDb } from './API'
 
 const nameMyInstance = axios.create({
     withCredentials: true,
-    baseURL: `http://127.0.0.1:5984/`
+    baseURL: baseUrlLocalCouchDb
 })
 
 export const nameMyPasswordAPI = {
 
+    putRegistrUserNew(newUserName, password) {
+
+        return nameMyInstance.put(`_users/org.couchdb.user:${newUserName}`, { name: newUserName, password: password, roles: [], type: "user" })
+            .then(response => {
+                return response
+            })
+            .catch(error => {
+                return error.response
+            })
+    },
+
     getNameMy() {
         return nameMyInstance.get(`_session`)
+            .then(response => {
+                return response.data
+            })
+    },
+
+    getInfoNameMy(nameMy) {
+        return nameMyInstance.get(`profile/${nameMy}`)
             .then(response => {
                 return response.data
             })

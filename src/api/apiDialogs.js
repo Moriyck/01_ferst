@@ -1,8 +1,9 @@
 import *as axios from 'axios'
+import { baseUrlLocalCouchDb } from './API'
 
 const couchdbInstance = axios.create({
     withCredentials: true,
-    baseURL: `http://127.0.0.1:5984/`
+    baseURL: baseUrlLocalCouchDb
 })
 
 export const dialogsAPI = {

@@ -3,6 +3,7 @@ import classes from './Auth.module.css'
 import { reduxForm, Field } from 'redux-form'
 import { Input } from '../../comon/FormsControls/FormsControls'
 import { requiredField, minLengthCreator } from '../../utils/validators/validator'
+import { NavLink } from 'react-router-dom'
 
 const minLength10 = minLengthCreator(10)
 const LoginForm = (props) => {
@@ -27,13 +28,14 @@ const LoginForm = (props) => {
             name="password"
             placeholder="Password"
             size="24"
+            autoComplete=""
             component={Input}
             validate={[requiredField, minLength10]}
           />
         </div>
         <div>
           <Field
-            id="password"
+            id="remamberMe"
             type="checkbox"
             name="remamberMe"
             component={Input}
@@ -41,10 +43,10 @@ const LoginForm = (props) => {
           />Remember me
         </div>
         <div >
-        {props.error}
+          {props.error}
         </div>
         <div>
-          <button>Log In</button>
+          <button>Log In</button><span> or</span> <span key=""><NavLink to="/Registration" > Sing up</NavLink> </span>
         </div>
       </form>
     </div>
@@ -54,7 +56,7 @@ const LoginForm = (props) => {
 const LoginReduxForm = reduxForm({ form: 'login' })(LoginForm)
 const Authentication = (props) => {
   const onSubmit = (formData) => {
-      props.onSubmit(formData.username, formData.password)
+    props.onSubmit(formData.username, formData.password)
   }
 
   return (

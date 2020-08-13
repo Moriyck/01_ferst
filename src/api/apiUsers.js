@@ -1,8 +1,9 @@
 import *as axios from 'axios'
+import { baseUrlLocalCouchDb } from './API'
 
 const couchdbInstance = axios.create({
     withCredentials: true,
-    baseURL: `http://127.0.0.1:5984/`
+    baseURL: baseUrlLocalCouchDb
 })
 
 export const usersAPI = {
@@ -13,10 +14,10 @@ export const usersAPI = {
             })
     },
 
-    getUsersFollow() {
-        return couchdbInstance.get(`follow/_all_docs?include_docs=true`)
+    getUsersFollow(userId) {
+        return couchdbInstance.get(`follow/_design/MyDocument/_view/allMyDocuments?include_docs=true&inclusive_end=true&start_key="${userId}"&end_key="${userId}"`)
             .then(response => {
-                return response.data
+                return response.data.rows
             })
     },
 
@@ -25,6 +26,6 @@ export const usersAPI = {
     },
 
     postFollow(userId, nameMy) {
-        return couchdbInstance.post(`follow/${userId}`, { nameMy: nameMy, type: 'follow' })
+        return couchdbInstance.post(`follow/`, { nameMy: nameMy, followName: userId })
     }
 }

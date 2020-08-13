@@ -1,15 +1,30 @@
 import *as axios from 'axios'
+import { baseUrlLocalCouchDb } from './API'
 
 const couchdbInstance = axios.create({
     withCredentials: true,
-    baseURL: `http://127.0.0.1:5984/`
+    baseURL: baseUrlLocalCouchDb
 })
 
 export const profileAPI = {
     getProfile(userId) {
         return couchdbInstance.get(`profile/${userId}`)
             .then(response => {
-                return response.data
+                return response
+            })
+            .catch(error => {
+                return error.response
+            })
+    },
+
+    updateProfile(userId, propername, surname, birthdate) {
+        return couchdbInstance.put(`profile/${userId}`, { name: propername, surname: surname, birthdate: birthdate })
+            .then(response => {
+                debugger
+                return response
+            })
+            .catch(error => {
+                return error.response
             })
     },
 
@@ -26,5 +41,11 @@ export const profileAPI = {
 
     postPost(nameMy, message) {
         return couchdbInstance.post(`posts/`, { author: nameMy, message: message, likesCount: 0 })
+    },
+
+    fileTheDownload(userId, rev, faileData) {
+        const formData = new FormData
+        formData.append("image", faileData)
+        return couchdbInstance.put(`profile/${userId}/${faileData.name}?rev=${rev}`, faileData, { headers: { 'Content-Type': `${faileData.type}` } })
     }
 }
